@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Daftar - Program Beasiswa SIAP KULIAH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link href="/assets/fonts/material-icons/material-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    
+    <!-- Google Sign-In Scripts -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div class="auth-container">
+      <!-- Alert messages -->
+      <div id="alert-container"></div>
+      
+      <form class="ui form" id="signup-form" action="" method="POST">
+        <div class="field">
+          <input type="text" name="nama" value="{nama}" placeholder="Nama Lengkap">
+          <div class="feedback" id="nama-feedback">{errors_nama}</div>
+        </div>
+        <div class="field">
+          <input type="email" name="email" value="{email}" placeholder="Email">
+          <div class="feedback" id="email-feedback">{errors_email}</div>
+        </div>
+        <div class="field">
+          <input type="password" name="password" id="password" placeholder="Password (minimal 6 karakter)">
+          <div class="feedback1" id="password-feedback1">{errors_password}</div>
+        </div>
+        <div class="field">
+          <input type="password" name="konfirmasi_password" id="konfirmasi_password" placeholder="Konfirmasi Password">
+          <div class="feedback1" id="konfirmasi-password-feedback">{errors_konfirmasi_password}</div>
+        </div>
+        <button class="button" type="submit">Daftar</button>
+      </form>
+      
+        <!-- Divider -->
+        <div class="auth-divider">
+            <span>Daftar dengan Google</span>
+        </div>
+
+        <!-- Google Sign-In -->
+        <div class="social-login">
+            <div id="g_id_onload"
+                 data-client_id="439618760894-3230nsh6lbsvo9sier0kdfnunt5743id.apps.googleusercontent.com"
+                 data-context="signup"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleSignIn"
+                 data-auto_prompt="false"
+                 data-itp_support="true">
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="signup_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Footer -->
+    <div class="auth-footer">
+        <p>Sudah punya akun? <a href="{signin}">Masuk di sini</a></p>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="{theme/oauth/signup.js}" defer></script>
+
+</body>
+</html>

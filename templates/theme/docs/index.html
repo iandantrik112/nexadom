@@ -1,0 +1,124 @@
+<section class="nx-hero">
+    <div class="nx-hero-bg"></div>
+    <div class="nx-hero-content">
+        <div class="nx-hero-left">
+            <div class="nx-hero-pills">
+                <span>PHP 8+</span>
+                <span>MVC</span>
+                <span>REST API</span>
+                <span>MIT</span>
+            </div>
+            <h1 class="nx-hero-title">
+                <span class="nx-hero-title-line">Build faster with</span>
+                <span class="nx-hero-title-brand">{app_name}</span>
+            </h1>
+            <p class="nx-hero-desc">Framework PHP modern dengan NexaDom Template Engine, Frontend Routing dinamis, dan REST API siap pakai. Ringan, cepat, produksi-ready.</p>
+            <div class="nx-hero-actions">
+                <a href="{base_url}/home" class="nx-hero-btn nx-hero-btn-primary">Mulai Sekarang →</a>
+                <a href="{base_url}/docs" class="nx-hero-btn nx-hero-btn-outline">Dokumentasi</a>
+            </div>
+        </div>
+        <div class="nx-hero-right">
+            <div class="nx-hero-code">
+                <div class="nx-hero-code-header">
+                    <span></span><span></span><span></span>
+                </div>
+                <pre><code><span class="c">// routes/web.php</span>
+$router->add(<span class="s">'/'</span>, <span class="s">'FrontendController@index'</span>);
+$router->add(<span class="s">'/api/{params}'</span>, <span class="s">'ApiController@index'</span>);
+
+<span class="c">// That's it.</span></code></pre>
+            </div>
+        </div>
+    </div>
+    <div class="nx-hero-meta">
+        <span><code>templates/theme/</code></span>
+        <span class="nx-hero-meta-dot">·</span>
+        <span><code>FrontendController</code></span>
+        <span class="nx-hero-meta-dot">·</span>
+        <span><code>/docs</code> <code>/docs/&#123;topic&#125;</code></span>
+    </div>
+</section>
+
+<section class="nx-docs-section">
+    <h2 class="nx-section-title">Dokumentasi</h2>
+    <p class="nx-section-desc">12 topik referensi untuk memulai dan menguasai NexaUI.</p>
+    <div class="nx-cards">
+        <a href="{base_url}/docs/getting-started" class="nx-card">
+            <span class="nx-card-icon">01</span>
+            <h3>Getting Started</h3>
+            <p>Introduction, Installation, Quick Start</p>
+        </a>
+        <a href="{base_url}/docs/tutorial" class="nx-card">
+            <span class="nx-card-icon">02</span>
+            <h3>Tutorial</h3>
+            <p>Routing, Controllers, Models, Views</p>
+        </a>
+        <a href="{base_url}/docs/general-topics" class="nx-card">
+            <span class="nx-card-icon">03</span>
+            <h3>General Topics</h3>
+            <p>App Flow, Config, URLs, Errors</p>
+        </a>
+        <a href="{base_url}/docs/libraries" class="nx-card">
+            <span class="nx-card-icon">04</span>
+            <h3>Libraries</h3>
+            <p>Nexa, NexaRouter, NexaModel, NexaLite</p>
+        </a>
+        <a href="{base_url}/docs/helpers" class="nx-card">
+            <span class="nx-card-icon">05</span>
+            <h3>Helpers</h3>
+            <p>NexaRequest, NexaSession, NexaAgent</p>
+        </a>
+        <a href="{base_url}/docs/database" class="nx-card">
+            <span class="nx-card-icon">06</span>
+            <h3>Database</h3>
+            <p>NexaModel, NexaLite, NexaIndexDB</p>
+        </a>
+        <a href="{base_url}/docs/template-engine" class="nx-card">
+            <span class="nx-card-icon">07</span>
+            <h3>NexaDom</h3>
+            <p>Variable, Block, Filter, Nexautility</p>
+        </a>
+        <a href="{base_url}/docs/components" class="nx-card">
+            <span class="nx-card-icon">08</span>
+            <h3>Components</h3>
+            <p>NexaUI, NexaModal, NexaForm</p>
+        </a>
+        <a href="{base_url}/docs/advanced" class="nx-card">
+            <span class="nx-card-icon">09</span>
+            <h3>Advanced</h3>
+            <p>refParams, useModels, useParams, Events, Middleware</p>
+        </a>
+        <a href="{base_url}/docs/api" class="nx-card">
+            <span class="nx-card-icon">10</span>
+            <h3>API Reference</h3>
+            <p>REST API, routes/api.php</p>
+        </a>
+        <a href="{base_url}/docs/dashboard" class="nx-card">
+            <span class="nx-card-icon">11</span>
+            <h3>Dashboard</h3>
+            <p>Layout, AdminController, Session routing</p>
+        </a>
+        <a href="{base_url}/docs/appendices" class="nx-card">
+            <span class="nx-card-icon">12</span>
+            <h3>Appendices</h3>
+            <p>Class Reference, File Structure</p>
+        </a>
+    </div>
+</section>
+
+<section class="nx-info-section">
+    <h2 class="nx-section-title">Struktur</h2>
+    <div class="nx-info-grid">
+        <div class="nx-info-card">
+            <h4>Layout</h4>
+            <p><code>theme</code> · <code>mobile</code> · <code>tablet</code> · <code>dashboard</code></p>
+            <p class="nx-info-note">Device detection via <code>divert()</code> &amp; <code>getDevice()</code></p>
+        </div>
+        <div class="nx-info-card">
+            <h4>Files</h4>
+            <p><code>header.html</code> · <code>index.html</code> · <code>footer.html</code></p>
+            <p class="nx-info-note">Path: <code>templates/{device}/</code></p>
+        </div>
+    </div>
+</section>

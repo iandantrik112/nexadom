@@ -1,0 +1,4 @@
+# Runtime uploads (avatars, drive files) — not for version control
+assets/drive/
+system/log/
+catatan.md

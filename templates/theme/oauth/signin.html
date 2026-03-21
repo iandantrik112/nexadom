@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Masuk - Program Beasiswa SIAP KULIAH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link href="/assets/fonts/material-icons/material-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    
+    <!-- Google Sign-In Scripts -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div class="auth-container">
+    <!-- Auth Header -->
+    <div class="auth-header">
+        <div class="auth-logo">
+            <img src="/assets/images/sibeto.png" alt="SIAP KULIAH Logo">
+        </div>
+        <h1 class="auth-title">Selamat Datang Kembali</h1>
+        <p class="auth-subtitle">Masuk ke akun Program Beasiswa SIAP KULIAH</p>
+    </div>
+
+    <!-- Auth Body -->
+    <div class="auth-body">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <!-- Sign In Form -->
+        <form class="auth-form" id="signin-form" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="nama@email.com"
+                    value="{email}"
+                    required
+                >
+                <div class="form-error" id="email-feedback">{errors_email}</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Masukkan password Anda"
+                        required
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <span class="material-icons" id="password-icon">visibility</span>
+                    </button>
+                </div>
+                <div class="form-error" id="password-feedback">{errors_password}</div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#" class="form-link">Lupa Password?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Masuk
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="auth-divider">
+            <span>atau masuk dengan</span>
+        </div>
+
+        <!-- Google Sign-In -->
+        <div class="social-login">
+            <div id="g_id_onload"
+                 data-client_id="439618760894-3230nsh6lbsvo9sier0kdfnunt5743id.apps.googleusercontent.com"
+                 data-callback="handleGoogleSignIn"
+                 data-auto_prompt="false">
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Footer -->
+    <div class="auth-footer">
+        <p>Belum punya akun? <a href="{signup}">Daftar sekarang</a></p>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const passwordIcon = document.getElementById("password-icon");
+    
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        passwordIcon.textContent = "visibility_off";
+    } else {
+        passwordInput.type = "password";
+        passwordIcon.textContent = "visibility";
+    }
+}
+
+// Form validation
+document.getElementById("signin-form").addEventListener("submit", function(e) {
+    // Add your form validation logic here
+});
+</script>
+
+<script src="theme/oauth/signin.js" defer></script>
+
+
+
+</body>
+</html>
