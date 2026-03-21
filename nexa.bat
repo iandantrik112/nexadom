@@ -21,8 +21,8 @@ if "%~1"=="" (
     echo     nexa git commit -m "first commit"
     echo.
     echo   Jika "nexa" belum dikenali:
-    echo     - Jalankan: . $PROFILE   lalu coba nexa lagi
-    echo     - Atau gunakan: .\nexa make 1/Product
+    echo     - Muat profil PowerShell: titik spasi $PROFILE  ^(dot-source: jalankan file profil di sesi ini^)
+    echo     - Atau: .\nexa make 1/Product  ^(tanpa fungsi di profil^)
     echo.
     exit /b 0
 )

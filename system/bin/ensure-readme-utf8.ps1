@@ -1,3 +1,7 @@
+# Tulis README.md sebagai UTF-8 (tanpa BOM) agar preview Cursor/VS Code tidak rusak.
+$root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$path = Join-Path $root 'README.md'
+$content = @'
 # Nexa / NexaDOM
 
 Platform aplikasi PHP (Nexa Core). Proyek ini dapat di-clone manual atau di-install sebagai kerangka baru lewat Composer.
@@ -42,8 +46,8 @@ cd C:\path\ke\root-proyek
 
 Setelah setup, fungsi **nexa** ditulis ke **profil PowerShell** (skrip yang dibaca saat terminal baru dibuka).
 
-- **$PROFILE** â€” variabel berisi path file profil Anda (contoh path: Documents/PowerShell/Microsoft.PowerShell_profile.ps1).
-- **Titik di depan** â€” itu perintah *dot-source*: jalankan file profil di sesi terminal ini, supaya fungsi nexa langsung aktif tanpa tutup buka terminal.
+- **$PROFILE** — variabel berisi path file profil Anda (contoh path: Documents/PowerShell/Microsoft.PowerShell_profile.ps1).
+- **Titik di depan** — itu perintah *dot-source*: jalankan file profil di sesi terminal ini, supaya fungsi nexa langsung aktif tanpa tutup buka terminal.
 
 Contoh (satu baris perintah pertama adalah titik + spasi + $PROFILE):
 
@@ -88,3 +92,7 @@ Argumen diteruskan ke `git.exe` (contoh: `status`, `add`, `commit`, `push`).
 | Migrasi | nexa migrate run |
 
 Jalankan `nexa` tanpa argumen untuk bantuan singkat di terminal.
+'@
+$utf8 = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText($path, $content, $utf8)
+Write-Host "OK: $path (UTF-8, no BOM)"

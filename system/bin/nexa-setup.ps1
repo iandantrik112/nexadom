@@ -46,12 +46,16 @@ $profileContent = if (Test-Path $profilePath) { Get-Content $profilePath -Raw } 
 if ($profileContent -notlike "*function nexa*") {
     Add-Content -Path $profilePath -Value "`n# NexaUI CLI`n$nexaFunc"
     Write-Host "  [OK] Fungsi nexa dipasang di profil PowerShell" -ForegroundColor Green
-    Write-Host "  Muat profil (titik + spasi + \$PROFILE): . `$PROFILE" -ForegroundColor Yellow
-    Write-Host "  Lalu: nexa make 1/Product" -ForegroundColor Yellow
+    Write-Host "  Di terminal INI, muat profil dulu agar perintah 'nexa' dikenali:" -ForegroundColor Yellow
+    Write-Host "    . `$PROFILE" -ForegroundColor Cyan
+    Write-Host "  Artinya: titik = jalankan file profil sekarang; `$PROFILE = path ke Microsoft.PowerShell_profile.ps1" -ForegroundColor DarkGray
+    Write-Host "  Lalu: nexa make 1/Product   (atau buka tab terminal baru)" -ForegroundColor Yellow
 } else {
     Write-Host "  [OK] Fungsi nexa sudah ada di profil" -ForegroundColor Green
     if (-not (Get-Command nexa -ErrorAction SilentlyContinue)) {
-        Write-Host "  Muat profil: . `$PROFILE" -ForegroundColor Yellow
+        Write-Host "  Fungsi nexa belum aktif di sesi ini. Muat profil:" -ForegroundColor Yellow
+        Write-Host "    . `$PROFILE" -ForegroundColor Cyan
+        Write-Host "  (titik + spasi + `$PROFILE = dot-source file profil Anda)" -ForegroundColor DarkGray
         Write-Host "  Lalu: nexa make 1/Product" -ForegroundColor Yellow
     }
 }
