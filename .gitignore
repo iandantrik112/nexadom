@@ -1,4 +1,6 @@
-# Runtime uploads (avatars, drive files) — not for version control
-assets/drive/
+# Log lokal; catatan pribadi
 system/log/
 catatan.md
+
+# Upload per tahun: jangan commit isi folder tahun 2026 (drive, avatar/2026, dll.)
+assets/**/2026/
