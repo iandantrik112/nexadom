@@ -2,7 +2,7 @@
 $root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $path = Join-Path $root 'README.md'
 $content = @'
-# Nexa / NexaDOM
+# NexaDom Framework
 
 Platform aplikasi PHP (Nexa Core). Proyek ini dapat di-clone manual atau di-install sebagai kerangka baru lewat Composer.
 

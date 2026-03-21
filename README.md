@@ -1,4 +1,4 @@
-# Nexa / NexaDOM
+# NexaDom Framework
 
 Platform aplikasi PHP (Nexa Core). Proyek ini dapat di-clone manual atau di-install sebagai kerangka baru lewat Composer.
 
