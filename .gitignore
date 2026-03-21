@@ -3,5 +3,6 @@ system/log/
 catatan.md
 .gitattributes
 .gitignore
+.vscode
 # Upload per tahun: jangan commit isi folder tahun 2026 (drive, avatar/2026, dll.)
 assets/**/2026/
