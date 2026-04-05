@@ -1,0 +1,59 @@
+# Nonaktifkan daftar direktori
+Options -Indexes
+
+# Aktifkan penulisan ulang URL
+RewriteEngine On
+
+# Blokir akses langsung ke folder sensitif
+RewriteRule ^(controllers|models|system|vendor)/ - [F,L]
+
+# Izinkan akses ke file JavaScript dan CSS dalam templates directory
+RewriteRule ^templates/.*\.(js|css|png|jpg|jpeg|gif|svg)$ - [L]
+
+# Blokir akses ke file media lainnya dalam templates directory
+RewriteRule ^templates/.*\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$ - [F,L]
+
+# Blokir akses langsung ke view templates (PHP, HTML files) dalam views
+RewriteRule ^templates/.*\.(php|html|htm|tpl)$ - [F,L]
+
+# Blokir akses ke views directory tanpa file extension (folder browsing)
+RewriteRule ^templates/$ - [F,L]
+
+# Atur direktori dasar untuk aturan penulisan ulang
+
+# Redirect favicon.ico requests ke favicon.png di assets
+RewriteRule ^favicon\.ico$ assets/images/favicon.png [L]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CLEAN URL ROUTES: Route to Controllers (NOT direct file access)
+# IMPORTANT: /drive and /images must go through PHP controllers for resize support
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Route /docs dan /docs/* ke index.php (DocsController) — folder docs/ ada fisik
+RewriteRule ^docs(/.*)?$ index.php [QSA,L]
+
+# Route /assets/ ke index.php untuk template-aware resolution (theme/mobile/tablet/dashboard)
+# /assets/css/style.css → templates/{active}/assets/css/style.css atau assets/css/style.css
+RewriteRule ^assets/(.*)$ index.php [QSA,L]
+
+# Izinkan akses langsung ke file di direktori assets (EXCEPT drive & images subdirs)
+# This allows CSS, JS, fonts, etc to be served directly
+RewriteCond %{REQUEST_URI} !^/[^/]*/assets/(drive|images)/
+RewriteRule ^assets/ - [L]
+
+# Jika file atau direktori yang diminta ada (EXCEPT /drive and /images routes)
+# Allow direct access to physical files, but route /drive and /images to controllers
+RewriteCond %{REQUEST_URI} !^/[^/]*/drive/
+RewriteCond %{REQUEST_URI} !^/[^/]*/images/
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Route ALL other requests (including /drive and /images) to index.php
+# This allows DriveController and ImagesController to handle requests with resize support
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+
+#RewriteEngine On
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

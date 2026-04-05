@@ -1,0 +1,416 @@
+#!/usr/bin/env bash
+# NexaUI CLI — Linux / macOS (setara nexa.bat di Windows)
+# Pakai: chmod +x nexa   lalu: ./nexa make 1/Product
+#       atau: PATH="$PWD:$PATH" nexa migrate run
+
+set -u
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
+
+PHP_BIN="${PHP_BIN:-php}"
+
+php_run() {
+  if ! command -v "$PHP_BIN" >/dev/null 2>&1; then
+    echo "  [ERROR] PHP tidak ditemukan (perintah: $PHP_BIN). Pasang PHP dan pastikan ada di PATH." >&2
+    echo "  Atur opsional: PHP_BIN=/usr/local/bin/php ./nexa ..." >&2
+    exit 127
+  fi
+  "$PHP_BIN" "$@"
+}
+
+show_help() {
+  echo ""
+  echo "  NexaUI CLI (Unix)"
+  echo "  -----------------"
+  echo "   ./nexa make [controller]    Generator controller (1/Product, Admin/User)"
+  echo "   ./nexa migrate [command]    Migration (run, rollback, status, create Name, createdb nama_db)"
+  echo "   ./nexa start [port]         PHP built-in server (router.php, default 8000)"
+  echo "   ./nexa install node         Setup Node.js server (create server.js, package.json)"
+  echo "   ./nexa uninstall node       Remove Node.js server (delete server.js, package.json, node_modules)"
+  echo "   ./nexa node [port]          Node.js server development (default port 3000)"
+  echo "   ./nexa node production      Node.js server with PM2 (production mode)"
+  echo "   ./nexa restart [type]       Restart server (php, node, atau both)"
+  echo "   ./nexa git [args]           Sama seperti git (init, add, commit, push, …)"
+  echo ""
+  echo "   Contoh:"
+  echo "     ./nexa make 1/Product"
+  echo "     ./nexa migrate run"
+  echo "     ./nexa migrate status"
+  echo "     ./nexa migrate create CreateProductsTable"
+  echo "     ./nexa migrate createdb nama_database"
+  echo "     ./nexa start"
+  echo "     ./nexa start 3000"
+  echo "     ./nexa install node"
+  echo "     ./nexa uninstall node"
+  echo "     ./nexa node"
+  echo "     ./nexa node 4000"
+  echo "     ./nexa node production"
+  echo "     ./nexa restart both"
+  echo "     ./nexa git init"
+  echo "     ./nexa git add README.md"
+  echo "     ./nexa git commit -m \"first commit\""
+  echo ""
+  echo "   Setup pertama kali di Windows + PowerShell: jalankan nexa.bat (tanpa argumen)."
+  echo "   Di sini: pastikan PHP dan (untuk git) Git terpasang di PATH."
+  echo ""
+}
+
+cmd="${1:-}"
+
+if [[ -z "$cmd" ]]; then
+  show_help
+  exit 0
+fi
+
+case "$cmd" in
+  install)
+    if [[ "${2:-}" == "node" ]]; then
+      bash "$SCRIPT_DIR/system/bin/nexa-install-node.sh"
+      exit $?
+    else
+      echo ""
+      echo "  [ERROR] Perintah install tidak dikenal: ${2:-}" >&2
+      echo "  Gunakan: ./nexa install node" >&2
+      echo ""
+      exit 1
+    fi
+    ;;
+
+  uninstall)
+    if [[ "${2:-}" == "node" ]]; then
+      bash "$SCRIPT_DIR/system/bin/nexa-uninstall-node.sh"
+      exit $?
+    else
+      echo ""
+      echo "  [ERROR] Perintah uninstall tidak dikenal: ${2:-}" >&2
+      echo "  Gunakan: ./nexa uninstall node" >&2
+      echo ""
+      exit 1
+    fi
+    ;;
+
+  make)
+    if [[ $# -lt 2 ]]; then
+      echo ""
+      echo "  NexaUI Controller Generator"
+      echo "  1=Admin  2=Api  3=Frontend"
+      echo "  Contoh: 1/Product, Admin/User"
+      echo ""
+      read -r -p "  Controller: " input
+      if [[ -z "${input// }" ]]; then
+        echo "   Batal."
+        exit 1
+      fi
+      php_run "$SCRIPT_DIR/system/bin/NexaMake.php" "$input"
+    else
+      shift
+      php_run "$SCRIPT_DIR/system/bin/NexaMake.php" "$@"
+    fi
+    exit $?
+    ;;
+
+  migrate)
+    if [[ $# -lt 2 ]]; then
+      echo ""
+      echo "  NexaUI Migration"
+      echo "  1=run  2=rollback  3=status  4=create  5=createdb (nama DB)"
+      echo ""
+      read -r -p "  Perintah: " input
+      if [[ -z "${input// }" ]]; then
+        echo "   Batal."
+        exit 1
+      fi
+      php_run "$SCRIPT_DIR/system/bin/NexaMigrate.php" "$input"
+    else
+      shift
+      php_run "$SCRIPT_DIR/system/bin/NexaMigrate.php" "$@"
+    fi
+    exit $?
+    ;;
+
+  start)
+    if ! command -v "$PHP_BIN" >/dev/null 2>&1; then
+      echo "  [ERROR] PHP tidak ditemukan (perintah: $PHP_BIN)." >&2
+      exit 127
+    fi
+    shift
+    PORT="${1:-8000}"
+    if [[ ! "$PORT" =~ ^[0-9]+$ ]] || [[ "$PORT" -lt 1 ]] || [[ "$PORT" -gt 65535 ]]; then
+      echo "  [ERROR] Port tidak valid (1–65535): $PORT" >&2
+      exit 1
+    fi
+    if [[ ! -f "$SCRIPT_DIR/system/bin/router.php" ]]; then
+      echo "  [ERROR] system/bin/router.php tidak ditemukan." >&2
+      exit 1
+    fi
+    if [[ ! -f "$SCRIPT_DIR/vendor/autoload.php" ]]; then
+      echo "  [WARNING] vendor/autoload.php tidak ada. Jalankan: composer install" >&2
+    fi
+    echo ""
+    echo "  NexaUI — PHP built-in server"
+    echo "  http://localhost:${PORT}  (router.php)"
+    echo "  Ctrl+C untuk berhenti"
+    echo ""
+    cd "$SCRIPT_DIR" || exit 1
+    exec "$PHP_BIN" -S "localhost:${PORT}" "$SCRIPT_DIR/system/bin/router.php"
+    ;;
+
+  node)
+    shift
+    
+    # Check if server.js exists
+    if [[ ! -f "$SCRIPT_DIR/server.js" ]]; then
+      echo ""
+      echo "  ==============================================="
+      echo ""
+      echo "  [ERROR] server.js tidak ditemukan" >&2
+      echo ""
+      echo "  Jalankan install terlebih dahulu:" >&2
+      echo "    ./nexa install node" >&2
+      echo ""
+      exit 1
+    fi
+    
+    # Check if first argument is "production"
+    if [[ "${1:-}" == "production" ]]; then
+      echo ""
+      echo "  ==============================================="
+      echo "    NexaUI - Node.js Production Mode (PM2)"
+      echo "  ==============================================="
+      echo ""
+      
+      # Check if PM2 is installed
+      if ! command -v pm2 >/dev/null 2>&1; then
+        echo "  [ERROR] PM2 tidak ditemukan!" >&2
+        echo "" >&2
+        echo "  Install PM2 terlebih dahulu:" >&2
+        echo "    npm install -g pm2" >&2
+        echo "" >&2
+        echo "  Setelah install, jalankan lagi." >&2
+        echo "" >&2
+        exit 1
+      fi
+      
+      # Create ecosystem.config.js if not exists
+      if [[ ! -f "ecosystem.config.js" ]]; then
+        echo "  [1/2] Creating ecosystem.config.js..."
+        cp "$SCRIPT_DIR/system/bin/templates/ecosystem.config.template" "ecosystem.config.js" 2>/dev/null
+        if [[ $? -ne 0 ]]; then
+          echo "  [ERROR] Failed to create ecosystem.config.js" >&2
+          exit 1
+        fi
+        echo "  [OK] ecosystem.config.js created"
+        echo ""
+      fi
+      
+      # Start with PM2
+      echo "  [2/2] Starting with PM2..."
+      echo ""
+      pm2 start ecosystem.config.js
+      echo ""
+      echo "  ==============================================="
+      echo "    Server started with PM2!"
+      echo "  ==============================================="
+      echo ""
+      echo "  Perintah PM2:"
+      echo "    pm2 status              - Check status"
+      echo "    pm2 logs nexaui-node    - View logs"
+      echo "    pm2 restart nexaui-node - Restart"
+      echo "    pm2 stop nexaui-node    - Stop"
+      echo "    pm2 save                - Save config"
+      echo ""
+      exit 0
+    fi
+    
+    # Development mode (normal node)
+    if ! command -v node >/dev/null 2>&1; then
+      echo ""
+      echo "  [ERROR] Node.js tidak ditemukan. Pasang Node.js terlebih dahulu." >&2
+      echo "  Unduh: https://nodejs.org/" >&2
+      echo ""
+      exit 1
+    fi
+    
+    NODE_PORT="${1:-3000}"
+    
+    # Validate port is numeric and in valid range
+    if [[ ! "$NODE_PORT" =~ ^[0-9]+$ ]] || [[ "$NODE_PORT" -lt 1 ]] || [[ "$NODE_PORT" -gt 65535 ]]; then
+      echo ""
+      echo "  [ERROR] Port tidak valid: $NODE_PORT" >&2
+      echo ""
+      echo "  Gunakan:" >&2
+      echo "    ./nexa node           - Development mode (port 3000)" >&2
+      echo "    ./nexa node 4000      - Development mode (port 4000)" >&2
+      echo "    ./nexa node production - Production mode (PM2)" >&2
+      echo ""
+      exit 1
+    fi
+    
+    if [[ ! -d "$SCRIPT_DIR/node_modules" ]]; then
+      echo ""
+      echo "  [INFO] Installing Node.js dependencies..."
+      echo ""
+      npm install
+      if [[ $? -ne 0 ]]; then
+        echo ""
+        echo "  [ERROR] Gagal menginstall dependencies." >&2
+        exit 1
+      fi
+      echo ""
+    fi
+    
+    echo ""
+    echo "  ==============================================="
+    echo "    NexaUI - Node.js Development Server"
+    echo "  ==============================================="
+    echo ""
+    echo "  Starting on port $NODE_PORT..."
+    echo ""
+    PORT="$NODE_PORT" node "$SCRIPT_DIR/server.js"
+    exit $?
+    ;;
+
+  restart)
+    shift
+    RESTART_TYPE="${1:-both}"
+    
+    echo ""
+    echo "  Restarting servers..."
+    echo ""
+    
+    case "$RESTART_TYPE" in
+      php)
+        echo "  [INFO] Restarting PHP server..."
+        pkill -f "php.*router.php" 2>/dev/null || true
+        sleep 2
+        nohup ./nexa start >/dev/null 2>&1 &
+        echo "  [OK] PHP server restarted"
+        ;;
+      node)
+        echo "  [INFO] Restarting Node.js server..."
+        pkill -f "node.*server.js" 2>/dev/null || true
+        sleep 2
+        nohup ./nexa node 3000 >/dev/null 2>&1 &
+        echo "  [OK] Node.js server restarted"
+        ;;
+      both)
+        echo "  [INFO] Restarting PHP server..."
+        pkill -f "php.*router.php" 2>/dev/null || true
+        echo "  [INFO] Restarting Node.js server..."
+        pkill -f "node.*server.js" 2>/dev/null || true
+        sleep 2
+        nohup ./nexa start >/dev/null 2>&1 &
+        nohup ./nexa node 3000 >/dev/null 2>&1 &
+        echo "  [OK] Both servers restarted"
+        ;;
+      *)
+        echo "  [ERROR] Tipe restart tidak valid: $RESTART_TYPE" >&2
+        echo "  Gunakan: php, node, atau both" >&2
+        exit 1
+        ;;
+    esac
+    
+    echo ""
+    exit 0
+    ;;
+
+  stop)
+    shift
+    STOP_TYPE="${1:-both}"
+    
+    echo ""
+    echo "  Stopping servers..."
+    echo ""
+    
+    case "$STOP_TYPE" in
+      php)
+        echo "  [INFO] Stopping PHP server..."
+        if pkill -f "php.*router.php" 2>/dev/null; then
+          echo "  ✓ PHP server stopped"
+        else
+          echo "  ℹ No PHP processes running"
+        fi
+        ;;
+      node)
+        echo "  [INFO] Stopping Node.js server..."
+        
+        # Stop PM2 if exists
+        if command -v pm2 &>/dev/null; then
+          pm2 stop nexaui-node &>/dev/null
+          pm2 delete nexaui-node &>/dev/null
+        fi
+        
+        # Stop regular Node.js processes
+        if pkill -f "node.*server.js" 2>/dev/null; then
+          echo "  ✓ Node.js server stopped"
+        else
+          echo "  ℹ No Node.js processes running"
+        fi
+        ;;
+      both)
+        echo "  [INFO] Stopping PHP server..."
+        pkill -f "php.*router.php" 2>/dev/null || true
+        
+        echo "  [INFO] Stopping Node.js server..."
+        
+        # Stop PM2 if exists
+        if command -v pm2 &>/dev/null; then
+          pm2 stop nexaui-node &>/dev/null
+          pm2 delete nexaui-node &>/dev/null
+        fi
+        
+        # Stop regular Node.js processes
+        pkill -f "node.*server.js" 2>/dev/null || true
+        echo "  ✓ Both servers stopped"
+        ;;
+      *)
+        echo "  [ERROR] Tipe stop tidak valid: $STOP_TYPE" >&2
+        echo "  Gunakan: php, node, atau both" >&2
+        exit 1
+        ;;
+    esac
+    
+    echo ""
+    exit 0
+    ;;
+
+  git)
+    if ! command -v git >/dev/null 2>&1; then
+      echo "  [ERROR] git tidak ditemukan. Pasang Git (mis. apt install git / brew install git / xcode-select)." >&2
+      echo "  Unduh: https://git-scm.com/downloads" >&2
+      exit 1
+    fi
+    if [[ $# -lt 2 ]]; then
+      echo ""
+      echo "  nexa git <perintah yang sama seperti git>"
+      echo "  Satu perintah per baris (jangan tempel dua nexa git jadi satu baris)."
+      echo "  Sebelum push: commit harus sukses dulu; set nama/email jika perlu:"
+      echo "    ./nexa git config --global user.name \"Nama Anda\""
+      echo "    ./nexa git config --global user.email \"email@anda.com\""
+      echo "  Contoh urutan:"
+      echo "    ./nexa git init"
+      echo "    ./nexa git add README.md"
+      echo "    ./nexa git commit -m \"first commit\""
+      echo "    ./nexa git branch -M main"
+      echo "    ./nexa git remote add origin https://github.com/user/repo.git"
+      echo "    ./nexa git push -u origin main"
+      echo ""
+      exit 1
+    fi
+    shift
+    git "$@"
+    exit $?
+    ;;
+
+  -h|--help|help)
+    show_help
+    exit 0
+    ;;
+
+  *)
+    echo "  [ERROR] Perintah tidak dikenal: $cmd" >&2
+    echo "  Gunakan: ./nexa make, ./nexa migrate, ./nexa start, ./nexa node, ./nexa restart, ./nexa git ..." >&2
+    exit 1
+    ;;
+esac

@@ -1,0 +1,73 @@
+
+<div class="nx-readme-doc">
+  <header class="nx-readme-hero">
+    <div class="nx-readme-hero-inner nx-readme-hero-banner">
+      <div class="nx-readme-hero-col nx-readme-hero-col--text">
+   
+            <img src="{assets/images/logo.png}" alt="" class="nx-readme-logo" width="80" decoding="async" />
+         
+        <div class="nx-readme-hero-top pt-40px">
+        
+          <div class="nx-readme-hero-headlines">
+            <h1>Nexa Dom Framework <span class="nx-readme-hero-version" title="Versi framework">v2.0.0</span></h1>
+          </div>
+        </div>
+       <div id="alert-container"></div>
+
+        <!-- Sign In Form -->
+        <form class="auth-form" id="signin-form" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="nama@email.com"
+                    value="{email}"
+                    required
+                >
+                <div class="form-error" id="email-feedback">{errors_email}</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Masukkan password Anda"
+                        required
+                    >
+                    <button type="button" class="password-toggle" data-password-target="password" aria-label="Tampilkan password" aria-pressed="false">
+                        <svg class="password-toggle__icon password-toggle__icon--show" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="password-toggle__icon password-toggle__icon--hide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                    </button>
+                </div>
+                <div class="form-error" id="password-feedback">{errors_password}</div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#" class="form-link">Lupa Password?</a>
+            </div>
+
+            <button type="submit" class="nx-readme-btn nx-readme-btn--on-light">
+                Masuk
+            </button>
+        </form>
+
+
+    <!-- Auth Footer -->
+    <div class="auth-footer">
+        <p>Belum punya akun? <a href="{signup}">Daftar sekarang</a></p>
+    </div>
+      </div>
+      <div class="nx-readme-hero-col nx-readme-hero-col--art" aria-hidden="true">
+        <img src="{assets/images/a2.png}" alt="" class="nx-readme-hero-art" width="560" height="320" loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </header>
+</div>
+
