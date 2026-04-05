@@ -1,211 +1,30 @@
-
-<!-- Hero Slider Section -->
-<section class="hero-slider" id="home">
-    <div class="slider-container">
-        <div class="slider-wrapper">
-            <div class="slide active">
-                <img src="/assets/images/tr2.png" alt="Program Beasiswa Prestasi">
+<div class="nx-readme-doc">
+    <header class="nx-readme-hero">
+      <div class="nx-readme-hero-inner nx-readme-hero-banner">
+        <div class="nx-readme-hero-col nx-readme-hero-col--text">
+     
+              <img src="{assets/images/logo.png}" alt="" class="nx-readme-logo" width="80" decoding="async" />
+           
+          <div class="nx-readme-hero-top pt-40px">
+          
+            <div class="nx-readme-hero-headlines">
+              <h1>Nexa Dom Framework <span class="nx-readme-hero-version" title="Versi framework">v2.0.0</span></h1>
             </div>
-            <div class="slide">
-                <img src="/assets/images/tr1.png" alt="Program Beasiswa Akhir Studi">
-            </div>
-            <div class="slide">
-                <img src="/assets/images/tr3.png" alt="Program Beasiswa Magister">
-            </div>
-            <div class="slide">
-                <img src="/assets/images/tr4.png" alt="Program Beasiswa Hafidz Quran">
-            </div>
+          </div>
+          <p class="nx-readme-hero-lead">Satu halaman untuk menyiapkan terminal, menyelaraskan database, dan menghasilkan controller — tanpa membuka banyak tab dokumentasi.</p>
+          <div class="nx-readme-hero-meta">
+            <span>Windows · Linux · macOS</span>
+            <span>nexa CLI</span>
+            <span>migrate · make · start</span>
+          </div>
+          <div class="nx-readme-actions nx-readme-hero-actions">
+            <a href="http://nexaui.net/docs/cli" target="_blank" class="nx-readme-btn nx-readme-btn--on-light"><svg class="nx-readme-btn-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="m8 10 3 3-3 3"/><path d="M14 16h4"/></svg> Dokumentasi CLI nexa (terminal)</a>
+          </div>
         </div>
-        
-        <!-- Navigation Arrows -->
-        <button class="slider-nav prev" onclick="changeSlide(-1)">
-            <span class="material-icons">chevron_left</span>
-        </button>
-        <button class="slider-nav next" onclick="changeSlide(1)">
-            <span class="material-icons">chevron_right</span>
-        </button>
-        
-        <!-- Dots Navigation -->
-        <div class="slider-dots">
-            <span class="dot active" onclick="currentSlide(0)"></span>
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
+        <div class="nx-readme-hero-col nx-readme-hero-col--art" aria-hidden="true">
+          <img src="{assets/images/VUc7tXEC4Ll6pWdEWA5Kf.png}" alt="" class="nx-readme-hero-art" width="560" height="320" loading="lazy" decoding="async" />
         </div>
-    </div>
-</section>
- 
-<!-- Program Cards Section -->
-<section class="programs-section" id="programs">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Jenis Program Beasiswa</h2>
-            <p class="section-subtitle">Pilih program beasiswa yang sesuai dengan kebutuhan Anda</p>
-        </div>
-
-        <div class="programs-grid">
-            <!-- Beasiswa S1 SIAP Prestasi -->
-            <div class="program-card" data-program="prestasi">
-                <div class="card-icon">
-                    <span class="material-icons">emoji_events</span>
-                </div>
-                <h3 class="card-title">Beasiswa S1 SIAP Prestasi</h3>
-                <p class="card-description">Untuk mahasiswa berprestasi semester III - VI dengan IPK minimal 3.00</p>
-                <button class="btn-detail" onclick="showDetail('prestasi')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div>
-
-            <!-- Beasiswa S1 SIAP Akhir Studi -->
-            <div class="program-card" data-program="akhir">
-                <div class="card-icon">
-                    <span class="material-icons">school</span>
-                </div>
-                <h3 class="card-title">Beasiswa S1 SIAP Akhir Studi</h3>
-                <p class="card-description">Untuk mahasiswa semester VII - VIII yang akan menyelesaikan studi</p>
-                <button class="btn-detail" onclick="showDetail('akhir')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div>
-
-            <!-- Beasiswa S1 Perguruan Tinggi Lainnya -->
-            <div class="program-card" data-program="pt-lain">
-                <div class="card-icon">
-                    <span class="material-icons">account_balance</span>
-                </div>
-                <h3 class="card-title">Beasiswa S1 Perguruan Tinggi Lainnya</h3>
-                <p class="card-description">Untuk mahasiswa di perguruan tinggi luar Pohuwato</p>
-                <button class="btn-detail" onclick="showDetail('pt-lain')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div>
-
-            <!-- Beasiswa S2 Magister -->
-            <div class="program-card" data-program="s2">
-                <div class="card-icon">
-                    <span class="material-icons">workspace_premium</span>
-                </div>
-                <h3 class="card-title">Beasiswa S2 Magister</h3>
-                <p class="card-description">Untuk mahasiswa pascasarjana semester I - IV dengan IPK minimal 3.00</p>
-                <button class="btn-detail" onclick="showDetail('s2')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div>
-
-            <!-- Beasiswa SIAP Hafalan Quran -->
-            <div class="program-card" data-program="quran">
-                <div class="card-icon">
-                    <span class="material-icons">menu_book</span>
-                </div>
-                <h3 class="card-title">Beasiswa SIAP Hafalan Quran</h3>
-                <p class="card-description">Untuk penghafal Al-Quran dari 1 Juz sampai 30 Juz</p>
-                <button class="btn-detail" onclick="showDetail('quran')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div>
-
-            <!-- Beasiswa S1 SIAP Atlet -->
-<!--             <div class="program-card" data-program="atlet">
-                <div class="card-icon">
-                    <span class="material-icons">sports</span>
-                </div>
-                <h3 class="card-title">Beasiswa S1 SIAP Atlet</h3>
-                <p class="card-description">Untuk atlet berprestasi yang aktif kuliah di perguruan tinggi</p>
-                <button class="btn-detail" onclick="showDetail('atlet')">
-                    Lihat Persyaratan
-                    <span class="material-icons">arrow_forward</span>
-                </button>
-            </div> -->
-        </div>
-    </div>
-</section>
-
-<!-- Detail Modal -->
-<div id="detailModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle"></h3>
-            <button class="modal-close" onclick="closeModal()">
-                <span class="material-icons">close</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="requirements-list" id="modalRequirements"></div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-primary" onclick="applyScholarship()">
-                Ajukan Beasiswa
-                <span class="material-icons">send</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Info Section -->
-<section class="info-section" id="requirements">
-    <div class="container">
-        <div class="info-header">
-            <h2 class="info-title">Kenapa Memilih Program Beasiswa SIAP?</h2>
-            <p class="info-subtitle">Kemudahan dan keuntungan yang Anda dapatkan</p>
-        </div>
-        
-        <div class="info-grid">
-            <div class="info-card card-1">
-                <div class="info-card-inner">
-                    <div class="info-icon-wrapper">
-                        <span class="material-icons info-icon">description</span>
-                    </div>
-                    <div class="info-number">01</div>
-                    <h4>Dokumen Lengkap</h4>
-                    <p>Pastikan semua dokumen persyaratan sudah disiapkan dalam format digital</p>
-                    <div class="info-card-bg"></div>
-                </div>
-            </div>
-            
-            <div class="info-card card-2">
-                <div class="info-card-inner">
-                    <div class="info-icon-wrapper">
-                        <span class="material-icons info-icon">verified</span>
-                    </div>
-                    <div class="info-number">02</div>
-                    <h4>Verifikasi Cepat</h4>
-                    <p>Proses verifikasi dokumen dilakukan secara online dan transparan</p>
-                    <div class="info-card-bg"></div>
-                </div>
-            </div>
-            
-            <div class="info-card card-3">
-                <div class="info-card-inner">
-                    <div class="info-icon-wrapper">
-                        <span class="material-icons info-icon">support_agent</span>
-                    </div>
-                    <div class="info-number">03</div>
-                    <h4>Bantuan 24/7</h4>
-                    <p>Tim kami siap membantu Anda dalam proses pengajuan beasiswa</p>
-                    <div class="info-card-bg"></div>
-                </div>
-            </div>
-            
-            <div class="info-card card-4">
-                <div class="info-card-inner">
-                    <div class="info-icon-wrapper">
-                        <span class="material-icons info-icon">payments</span>
-                    </div>
-                    <div class="info-number">04</div>
-                    <h4>Tanpa Biaya</h4>
-                    <p>Proses pendaftaran dan pengajuan beasiswa 100% gratis tanpa dipungut biaya</p>
-                    <div class="info-card-bg"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- External JavaScript -->
-<script src="/assets/js/app.js"></script>
-
+      </div>
+    </header>
+  </div>
+  
